@@ -8,35 +8,36 @@ import { NavLink } from "react-router-dom";
 type TRoute = {
   path: string;
   element: ReactNode;
+  children?: TRoute[];
 };
 
-type TSidebarItems = {
+type TSidebarItem = {
   key: string;
   label: ReactNode;
-  children?: TSidebarItems[];
+  children?: TSidebarItem[];
 };
 
 const adminPaths = [
   {
     name: "Dashboard",
-    path: "/admin/dashboard",
+    path: "dashboard",
     element: <AdminDashboard />,
   },
   {
     name: "User Management",
     children: [
       {
-        name: "create-admin",
+        name: "Create Admin",
         path: "create-admin",
         element: <CreateAdmin />,
       },
       {
-        name: "create-faculty",
+        name: "Create Faculty",
         path: "create-faculty",
         element: <CreateFaculty />,
       },
       {
-        name: "create-student",
+        name: "Create Student",
         path: "create-student",
         element: <CreateStudent />,
       },
@@ -44,7 +45,7 @@ const adminPaths = [
   },
 ];
 
-//for admin routing
+//to create admin routes
 export const AdminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
   if (item.path && item.element) {
     acc.push({
@@ -52,7 +53,6 @@ export const AdminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
       element: item.element,
     });
   }
-
   if (item.children) {
     item.children.forEach((child) => {
       acc.push({
@@ -61,13 +61,12 @@ export const AdminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
       });
     });
   }
-
   return acc;
 }, []);
 
-//For admin sidebar items
-export const adminSidebarItems = adminPaths.reduce(
-  (acc: TSidebarItems[], item) => {
+//to create admin sidebar items
+export const AdminSidebarItems = adminPaths.reduce(
+  (acc: TSidebarItem[], item) => {
     if (item.path && item.name) {
       acc.push({
         key: item.name,
