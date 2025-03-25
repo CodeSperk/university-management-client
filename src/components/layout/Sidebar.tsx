@@ -1,9 +1,35 @@
 import { Layout, Menu } from "antd";
 import { NavLink } from "react-router-dom";
-import { AdminSidebarItems } from "../../routes/admin.routes";
+import { adminPaths } from "../../routes/admin.routes";
+import { sidebaGenerator } from "../../utils/sidebarGenerator";
+import { facultyPaths } from "../../routes/faculty.route";
+import { studentPaths } from "../../routes/student.route";
 const { Sider } = Layout;
 
+const userRole = {
+  Admin: "admin",
+  Faculty: "faculty",
+  Student: "student",
+};
+
 const Sidebar = () => {
+  const role = "student";
+
+  let sidebarItems;
+  switch (role) {
+    case userRole.Admin:
+      sidebarItems = sidebaGenerator(adminPaths, "admin");
+      break;
+    case userRole.Faculty:
+      sidebarItems = sidebaGenerator(facultyPaths, "faculty");
+      break;
+    case userRole.Student:
+      sidebarItems = sidebaGenerator(studentPaths, "student");
+      break;
+    default:
+      break;
+  }
+
   return (
     <Sider
       breakpoint="lg"
@@ -33,7 +59,7 @@ const Sidebar = () => {
         theme="dark"
         mode="inline"
         defaultSelectedKeys={["Dashboard"]}
-        items={AdminSidebarItems}
+        items={sidebarItems}
       />
     </Sider>
   );

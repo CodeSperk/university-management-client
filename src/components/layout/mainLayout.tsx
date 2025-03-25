@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./sidebar";
-import Navbar from "./navbar";
+import LayoutHeader from "./LayoutHeader";
+import Sidebar from "./Sidebar";
 
 const { Content } = Layout;
 
@@ -10,7 +10,7 @@ const MainLayout = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Sidebar />
       <Layout>
-        <Navbar />
+        <LayoutHeader />
         <Content
           style={{
             margin: "24px 16px",

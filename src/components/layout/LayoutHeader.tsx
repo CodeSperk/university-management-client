@@ -2,7 +2,7 @@ import { Layout } from "antd";
 
 const { Header } = Layout;
 
-const Navbar = () => {
+const LayoutHeader = () => {
   return (
     <Header
       style={{
@@ -14,4 +14,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default LayoutHeader;
