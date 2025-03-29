@@ -1,39 +1,47 @@
-import { useForm } from "react-hook-form";
+import { FieldValues} from "react-hook-form";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { verifyToken } from "../../utils/verifyToken";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/features/auth/authSlice";
+import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import UMSForm from "../../components/form/UMSForm";
+import UMSInput from "../../components/form/UMSInput";
+import { Button, Row } from "antd";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
-
-  const [login, { data, error }] = useLoginMutation();
-
-  const onFormSubmit = async (data) => {
-    const userInfo = {
-      id: data.userId,
-      password: data.password,
-    };
-    const res = await login(userInfo).unwrap();
-    const token = res.data.accessToken;
-    const user = verifyToken(token);
-    console.log(user);
-    dispatch(setUser({ user: user, token: token }));
+  const navigate = useNavigate();
+  
+  const [login] = useLoginMutation();
+  const onFormSubmit = async (data: FieldValues) => {
+    console.log(data);
+    const toastId = toast.loading("loging in");
+    try {
+      const userInfo = {
+        id: data.userId,
+        password: data.password,
+      };
+      const res = await login(userInfo).unwrap();
+      const token = res.data.accessToken;
+      const user = verifyToken(token) as TUser;
+      dispatch(setUser({ user: user, token: token }));
+      toast("Login Successfull");
+      toast.success("Login Successfull", { id: toastId, duration: 2000 });
+      navigate(`/${user.role}/dashboard`);
+    } catch {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)}>
-      <div>
-        <label htmlFor="userId">ID:</label>
-        <input type="text" id="userId" {...register("userId")} />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input type="text" id="password" {...register("password")} />
-      </div>
-      <input type="submit" placeholder="Login" />
-    </form>
+    <Row justify="center" align="middle" style={{height:"100vh"}}>
+      <UMSForm onSubmit={onFormSubmit}>
+        <UMSInput type='text' name='userId' label='ID'/>
+        <UMSInput type='text' name='password' label='Password'/>
+        <Button htmlType="submit">Login</Button>
+      </UMSForm>
+    </Row>
   );
 };
 
