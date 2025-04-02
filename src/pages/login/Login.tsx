@@ -26,11 +26,17 @@ const LoginPage = () => {
       const token = res.data.accessToken;
       const user = verifyToken(token) as TUser;
       dispatch(setUser({ user: user, token: token }));
+      toast.dismiss(toastId);
       toast("Login Successfull");
       toast.success("Login Successfull", { id: toastId, duration: 2000 });
       navigate(`/${user.role}/dashboard`);
-    } catch {
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    } catch(err: any) {
+      toast.dismiss(toastId);
+      if(err.status === 404) {
+        toast.error("User Not found");
+      }else{
+        toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      }
     }
   };
 
