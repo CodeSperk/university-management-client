@@ -10,7 +10,6 @@ type TSelectProps =  {
         disabled? :boolean
     }[]
 }
-
 const UMSSelect = ({name, label, options } : TSelectProps) => (
   <Controller
     name={name}

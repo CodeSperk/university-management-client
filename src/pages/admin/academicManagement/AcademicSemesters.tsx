@@ -20,14 +20,7 @@ const AcademicSemesters = () => {
     endMonth
   }));
 
-  const uniqueYear: string[] = []
-    tableData?.forEach(item => {
-    if(!uniqueYear.includes(item.year)){
-      uniqueYear.push(item.year)
-    };
-  });
-  
-   
+
   const columns: TableColumnsType<TTableData> = [
   {
     title: 'Name',
@@ -49,15 +42,11 @@ const AcademicSemesters = () => {
       },
     ],
   },
-
   {
     title: 'Year',
     key:"year",
     dataIndex: 'year',
-    filters: uniqueYear.sort().reverse().map((item) => ({
-      text: item,
-      value: item
-    }))
+    sorter: (a, b) => Number(a.year) - Number(b.year),
   },
   {
     title: 'Start Month',

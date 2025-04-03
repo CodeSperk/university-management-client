@@ -42,7 +42,7 @@ const Sidebar = () => {
       onCollapse={(collapsed, type) => {
         // console.log(collapsed, type);
       }}
-      style={{height: "100vh", position:"fixed", top:"0", left:"0"}}
+      style={{height: "100vh", position:"sticky", zIndex:"1000", top:"0", left:"0"}}
     >
       <div
         style={{

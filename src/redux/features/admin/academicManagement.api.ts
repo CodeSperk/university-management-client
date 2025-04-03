@@ -1,4 +1,4 @@
-import { TAcademicSemester, TQueryParams, TResponseRedux } from "../../../types";
+import { TAcademicDepartment, TAcademicFaculty, TAcademicSemester, TQueryParams, TResponseRedux } from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 const academicSemesterManagementApi = baseApi.injectEndpoints({
@@ -32,8 +32,54 @@ const academicSemesterManagementApi = baseApi.injectEndpoints({
             method: "POST",
             body: data,
         })
+    }),
+    getAcademicFaculties: builder.query ({
+      query: () => {
+        return {
+          url: "/academicFaculties",
+          method: "GET",
+        }
+      },
+      transformResponse: (response: TResponseRedux<TAcademicFaculty[]>) => {
+        // console.log("inside Redux", response);
+
+        return {
+          data: response?.data,
+          meta: response?.meta
+        }
+      }
+    }),
+    addAcademicFaculty: builder.mutation({
+      query: (data) => ({
+        url: "/academicFaculties/create-faculty",
+        method: "POST",
+        body: data,
+      })
+    }) ,
+    getAcademicDepartment: builder.query ({
+      query: () => {
+        return {
+          url: "/departments",
+          method: "GET",
+        }
+      },
+      transformResponse: (response: TResponseRedux<TAcademicDepartment[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+    addAcademicDepartment: builder.mutation({
+      query: (data) => ({
+        url: "/departments/create-department",
+        method: "POST",
+        body: data,
+      })
     })
   }),
-});
+ 
 
-export const { useGetSemestersQuery, useAddAcademicSemesterMutation } = academicSemesterManagementApi;
+  });
+
+export const { useGetSemestersQuery, useAddAcademicSemesterMutation,  useGetAcademicFacultiesQuery, useAddAcademicFacultyMutation, useGetAcademicDepartmentQuery, useAddAcademicDepartmentMutation } = academicSemesterManagementApi;
