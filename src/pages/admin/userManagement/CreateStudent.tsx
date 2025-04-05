@@ -18,7 +18,7 @@ import { useAddStudentMutation } from "../../../redux/features/admin/userManagem
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createStudentSchema } from "../../../schemas/userManagement.schema";
 import { toast } from "sonner";
-import { TResponseRedux, TStudent } from "../../../types";
+import { TResponseRedux, Tstudent } from "../../../types";
 
 
 const CreateStudent = () => {
@@ -63,7 +63,7 @@ const CreateStudent = () => {
     formData.append("file", studentData.profileImg);
 
     try {
-      const res = (await addStudent(formData)) as TResponseRedux<TStudent>;
+      const res = (await addStudent(formData)) as TResponseRedux<Tstudent>;
       if (res.error) {
         toast.error(res.error?.data?.message, { id: toastId });
       } else {
