@@ -1,32 +1,28 @@
 import { Form } from "antd";
 import { ReactNode } from "react";
-import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 
 type TFormConfig = {
   defaultValues?:Record<string, any>;
   resolver?:any;
+  methods?: UseFormReturn<any>
 }
 type TFormProps = {
-    onSubmit: SubmitHandler<FieldValues>,
-    children: ReactNode,
+    onSubmit: SubmitHandler<FieldValues>;
+    children: ReactNode;
 } & TFormConfig;
  
-const UMSForm = ({ onSubmit, children, defaultValues, resolver }: TFormProps) => {
-  const formConfig: TFormConfig = {};
-  if(defaultValues){
-    formConfig['defaultValues'] = defaultValues;
-  }
+const UMSForm = ({ onSubmit, children, defaultValues, resolver, methods: externalMethods }: TFormProps) => {
 
-  if(resolver){
-    formConfig['resolver'] = resolver;
-  }
-
-  const methods = useForm({
-    ...formConfig
+  const internalMethods = useForm({
+    ...(defaultValues ? { defaultValues } : {}),
+    ...(resolver ? { resolver } : {}),
   });
+
+  const methods = externalMethods || internalMethods;
+  
   const submit = (data: FieldValues) => {
     onSubmit(data);
-    methods.reset();
   }
 
   return (

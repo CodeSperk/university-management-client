@@ -8,9 +8,10 @@ type TSelectProps =  {
         value: string,
         label: string,
         disabled? :boolean
-    }[]
+    }[] | [],
+    disabled?: boolean
 }
-const UMSSelect = ({name, label, options } : TSelectProps) => (
+const UMSSelect = ({name, label, options, disabled } : TSelectProps) => (
   <Controller
     name={name}
     render={({ field, fieldState: {error}}) => (
@@ -19,6 +20,7 @@ const UMSSelect = ({name, label, options } : TSelectProps) => (
           style={{ width: "100%" }}
           {...field}
           options={options}
+          disabled={disabled}
           size="large"
         /> 
         {error && <small style={{color:"red"}}>{error?.message}</small>}

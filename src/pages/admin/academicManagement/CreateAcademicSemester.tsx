@@ -1,4 +1,4 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import UMSForm from "../../../components/form/UMSForm";
 import { Button, Col, Flex } from "antd";
 import UMSSelect from "../../../components/form/UMSSelect";
@@ -18,9 +18,14 @@ const yearOptions = [0, 1, 2, 3, 4].map(number => ({
 }))
 
 const CreateAcademicSemester = () => {
+  const methods = useForm({
+    resolver: zodResolver(academicSemesterSchema),
+  });
+
   const [addAcademicSemester] = useAddAcademicSemesterMutation();
   const {data} = useGetAcademicFacultiesQuery(undefined);
   console.log("Faculty", data);
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Creating..")
     const name = semesterOptions[Number(data?.name) - 1]?.label;
@@ -41,6 +46,7 @@ const CreateAcademicSemester = () => {
         toast.error(res.error?.data?.message, {id: toastId});
       }else{
         toast.success("Semester Created Successfylly", {id: toastId})
+        methods.reset();
       }
     }catch(err: any){
       toast.error(err.error, {id: toastId})
@@ -53,7 +59,8 @@ const CreateAcademicSemester = () => {
       <Col span={12}>
           <UMSForm 
           onSubmit={onSubmit} 
-          resolver={zodResolver(academicSemesterSchema)}>
+          methods={methods}
+          >
           <UMSSelect
             name="name"
             label="Semester Name :"
