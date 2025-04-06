@@ -1,7 +1,2 @@
-
-})
-import { z } from 'zod';
-
-//s
-const createUserNameValidationSchema = z.object({
- 
+    startDate: z.string({required_error: "Please provide start date"}).datetime(),
+    endDate : z.string({required_error: "Please end date"}).datetime(),
