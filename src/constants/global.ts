@@ -30,4 +30,4 @@ export const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 export const bloodGroupOntions = bloodGroups.map((item) => ({
     value: item,
     label: item
-}))
+}));

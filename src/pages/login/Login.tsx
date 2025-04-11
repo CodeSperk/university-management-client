@@ -15,7 +15,6 @@ const LoginPage = () => {
   
   const [login] = useLoginMutation();
   const onFormSubmit = async (data: FieldValues) => {
-    console.log(data);
     const toastId = toast.loading("loging in");
     try {
       const userInfo = {
@@ -24,12 +23,19 @@ const LoginPage = () => {
       };
       const res = await login(userInfo).unwrap();
       const token = res.data.accessToken;
+
       const user = verifyToken(token) as TUser;
       dispatch(setUser({ user: user, token: token }));
       toast.dismiss(toastId);
       toast("Login Successfull");
+
       toast.success("Login Successfull", { id: toastId, duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      if(res?.data?.needsPasswordChange){
+        navigate(`/change-password`);
+      }else{
+        navigate(`/${user.role}/dashboard`);
+      }
+      
     } catch(err: any) {
       toast.dismiss(toastId);
       if(err.status === 404) {

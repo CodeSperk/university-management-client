@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export type TRoutes = {
-  path: string;
+  path?: string;
   element: ReactNode;
   children?: TRoutes[];
 };
@@ -12,7 +12,7 @@ export type TSidebarItems = {
 } | undefined;
 
 export type TItems = {
-  name: string;
+  name?: string;
   path?: string;
   element?: ReactNode;
   children?: TItems[];

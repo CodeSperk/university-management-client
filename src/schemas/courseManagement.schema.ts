@@ -11,3 +11,12 @@ export const semesterRegistrationSchema = z.object({
     minCredit: z.string({required_error: "Provide min credit"}),
     maxCredit: z.string({required_error: "Provide max credit"}),
   });
+
+
+export const courseSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  prefix: z.string().min(1, "Prefix is required"),
+  code: z.string(),
+  credits: z.string(),
+  preRequisiteCourses: z.array(z.string()).optional(),
+})
